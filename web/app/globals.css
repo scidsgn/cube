@@ -1,0 +1,88 @@
+/*
+ * CUBE
+ * Copyright (C) 2025  scidsgn
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "material-symbols/sharp.css";
+
+@theme inline {
+    --font-sans: var(--font-general-sans);
+    --font-serif: var(--font-recia);
+    --font-mono: var(--font-jb-mono);
+
+    --color-gray-50: #f5f6f6;
+    --color-gray-100: #e5e7e8;
+    --color-gray-200: #ced1d3;
+    --color-gray-300: #abb0b5;
+    --color-gray-400: #81878f;
+    --color-gray-500: #696f77;
+    --color-gray-600: #575b63;
+    --color-gray-700: #4b4e53;
+    --color-gray-800: #424448;
+    --color-gray-900: #3a3c3f;
+    --color-gray-950: #242528;
+
+    --color-accent-50: var(--accent-50);
+    --color-accent-100: var(--accent-100);
+    --color-accent-200: var(--accent-200);
+    --color-accent-300: var(--accent-300);
+    --color-accent-400: var(--accent-400);
+    --color-accent-500: var(--accent-500);
+    --color-accent-600: var(--accent-600);
+    --color-accent-700: var(--accent-700);
+    --color-accent-800: var(--accent-800);
+    --color-accent-900: var(--accent-900);
+    --color-accent-950: var(--accent-950);
+
+    --tracking-sm: 0.015em;
+
+    @keyframes loading-icon-move {
+        0% {
+            left: 15%;
+            top: 15%;
+        }
+        50% {
+            left: calc(50% - 0.15rem);
+            top: 15%;
+            width: 0.3rem;
+        }
+        100% {
+            left: calc(85% - 0.125rem);
+            top: 15%;
+        }
+    }
+}
+
+:root {
+    --accent-50: #f3f7fa;
+    --accent-100: #e9eff6;
+    --accent-200: #d7e2ee;
+    --accent-300: #becfe3;
+    --accent-400: #a4b5d5;
+    --accent-500: #8d9ec8;
+    --accent-600: #7482b7;
+    --accent-700: #626ea0;
+    --accent-800: #515b82;
+    --accent-900: #464e69;
+    --accent-950: #292d3d;
+}
+
+body {
+    background: var(--color-gray-950);
+    color: var(--color-gray-50);
+
+    font-family: var(--font-general-sans);
+}

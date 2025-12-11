@@ -1,0 +1,83 @@
+
+services:
+  redis:
+    image: redis:8.4.0-alpine
+  
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  venus:
+    build: ./venus
+    environment:
+      PORT: 8080
+      MEDIA_DRIVE: /etc/venus/media
+      INDEX_FOLDER: /etc/venus/data
+      POSTGRES_USER: venus
+      POSTGRES_PASSWORD: venus
+      POSTGRES_HOST: postgres:5432
+      POSTGRES_DB: venus
+      JWT_ISSUER: chamberlock
+      JWT_PUBLIC_KEY_PATH: /run/secrets/auth-public-key
+      REDIS_HOSTNAME: redis
+      REDIS_PORT: 6379
+      WORKER_COUNT: 3
+    volumes:
+      - venus-tmp:/etc/venus/data
+      - /CHANGE/THIS/MEDIA/FOLDER:/etc/venus/media
+    secrets:
+      - auth-public-key
+    depends_on:
+      - redis
+      - postgres
+  
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      secrets:
+        - auth-public-key
+        - auth-private-key
+      args:
+        VENUS_URL: http://venus:8080
+        MEDIA_DRIVE: /etc/venus/media
+        POSTGRES_USER: chamberlock
+        POSTGRES_PASSWORD: chamberlock
+        POSTGRES_HOST: postgres:5432
+        POSTGRES_DB: chamberlock
+        JWT_ISSUER: chamberlock
+        JWT_PUBLIC_KEY_PATH: /run/secrets/auth-public-key
+        JWT_PRIVATE_KEY_PATH: /run/secrets/auth-private-key
+    ports:
+      - "3000:3000"
+    environment:
+      VENUS_URL: http://venus:8080
+      MEDIA_DRIVE: /etc/venus/media
+      POSTGRES_USER: chamberlock
+      POSTGRES_PASSWORD: chamberlock
+      POSTGRES_HOST: postgres:5432
+      POSTGRES_DB: chamberlock
+      JWT_ISSUER: chamberlock
+      JWT_PUBLIC_KEY_PATH: /run/secrets/auth-public-key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/auth-private-key
+    volumes:
+      - /CHANGE/THIS/MEDIA/FOLDER:/etc/venus/media
+    secrets:
+      - auth-public-key
+      - auth-private-key
+    depends_on:
+      - postgres
+      - venus
+
+volumes:
+  venus-tmp:
+
+secrets:
+  auth-public-key:
+    file: ./secrets/publickey.crt
+  auth-private-key:
+    file: ./secrets/pkcs8.key
