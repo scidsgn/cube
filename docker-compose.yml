@@ -28,7 +28,7 @@ services:
       WORKER_COUNT: 3
     volumes:
       - venus-tmp:/etc/venus/data
-      - /CHANGE/THIS/MEDIA/FOLDER:/etc/venus/media
+      - ${MEDIA_FOLDER_PATH}:/etc/venus/media
     secrets:
       - auth-public-key
     depends_on:
@@ -65,7 +65,7 @@ services:
       JWT_PUBLIC_KEY_PATH: /run/secrets/auth-public-key
       JWT_PRIVATE_KEY_PATH: /run/secrets/auth-private-key
     volumes:
-      - /CHANGE/THIS/MEDIA/FOLDER:/etc/venus/media
+      - ${MEDIA_FOLDER_PATH}:/etc/venus/media
     secrets:
       - auth-public-key
       - auth-private-key
@@ -78,6 +78,6 @@ volumes:
 
 secrets:
   auth-public-key:
-    file: ./secrets/publickey.crt
+    file: ${PUBLIC_KEY_PATH}
   auth-private-key:
-    file: ./secrets/pkcs8.key
+    file: ${PRIVATE_KEY_PATH}
