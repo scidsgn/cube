@@ -76,7 +76,16 @@ export const ScanSection = () => {
                 {isOngoing ? (
                     <InterruptScanButton mutate={mutate} />
                 ) : (
-                    <ScanButton mutate={mutate} />
+                    <ScanButton
+                        onSuccess={() => {
+                            setScanAttemptFailed(false)
+                            mutate()
+                        }}
+                        onFail={() => {
+                            setScanAttemptFailed(true)
+                            mutate()
+                        }}
+                    />
                 )}
             </div>
             {scan && !scanAttemptFailed && <ScanStepList scan={scan} />}

@@ -20,10 +20,15 @@ import { interruptAction } from "@/app/settings/venus/library/scan/interrupt-act
 import { rescanAction } from "@/app/settings/venus/library/scan/rescan-action"
 import { venusErrorMapper } from "@/app/venus/venus-error-mapper"
 
-export const ScanButton = ({ mutate }: { mutate: () => unknown }) => {
+type ScanButtonProps = {
+    onFail: () => void
+    onSuccess: () => void
+}
+
+export const ScanButton = ({ onSuccess, onFail }: ScanButtonProps) => {
     const scan = useAction(rescanAction, venusErrorMapper, {
-        onSuccess: mutate,
-        onError: mutate,
+        onSuccess: onSuccess,
+        onError: onFail,
     })
 
     return (
