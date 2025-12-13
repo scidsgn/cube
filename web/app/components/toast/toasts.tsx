@@ -17,6 +17,20 @@
 
 import { Button } from "@/app/components/button/button"
 import { useToastStore } from "@/app/components/toast/toasts-store"
+import { ScrollArea } from "@/app/components/scroll-area"
+import { cva } from "@/app/cva.config"
+import { IconSymbol } from "@/app/components/icon/icon-symbol"
+
+const toastHeaderVariants = cva({
+    base: "flex min-w-0 items-center gap-2 font-medium",
+    variants: {
+        variant: {
+            info: "text-blue-300",
+            warning: "text-orange-300",
+            error: "text-red-300",
+        },
+    },
+})
 
 export const Toasts = () => {
     const toasts = useToastStore((state) => state.toasts)
@@ -27,21 +41,44 @@ export const Toasts = () => {
     }
 
     return (
-        <div className="fixed top-21 right-6 flex w-96 flex-col bg-gray-900">
-            {toasts.map((toast) => (
-                <div
-                    key={toast.id}
-                    className="flex min-w-0 border-gray-700 not-last-of-type:border-b-2"
-                >
-                    <div className="min-w-0 grow px-3 py-2">
-                        <p className="font-medium">{toast.title}</p>
-                        <p className="tracking-sm text-sm font-medium text-gray-300">
-                            {toast.message}
-                        </p>
-                    </div>
-                    <Button icon="close" onClick={() => closeToast(toast.id)} />
+        <div className="fixed top-21 right-6">
+            <ScrollArea
+                className="-mx-[2px] border-2 border-gray-950 shadow-lg shadow-gray-950"
+                viewportClassName="max-h-[calc(100vh-27*var(--spacing))] w-[calc(100vw-12*var(--spacing))] max-w-96 bg-red-300"
+            >
+                <div className="flex flex-col bg-gray-900">
+                    {toasts.map((toast) => (
+                        <div
+                            key={toast.id}
+                            className="flex min-w-0 border-gray-700 not-last-of-type:border-b-2"
+                        >
+                            <div className="flex min-w-0 grow flex-col gap-1 px-3 py-2">
+                                <div
+                                    className={toastHeaderVariants({
+                                        variant: toast.type,
+                                    })}
+                                >
+                                    <IconSymbol
+                                        icon={toast.type}
+                                        size={20}
+                                        weight={500}
+                                    />
+                                    <p className="grow truncate">
+                                        {toast.title}
+                                    </p>
+                                </div>
+                                <p className="tracking-sm text-sm font-medium text-gray-300">
+                                    {toast.message}
+                                </p>
+                            </div>
+                            <Button
+                                icon="close"
+                                onClick={() => closeToast(toast.id)}
+                            />
+                        </div>
+                    ))}
                 </div>
-            ))}
+            </ScrollArea>
         </div>
     )
 }

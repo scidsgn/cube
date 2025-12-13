@@ -20,6 +20,7 @@ import { createStore } from "zustand/vanilla"
 
 export type Toast = {
     id: string
+    type: "info" | "warning" | "error"
     title: string
     message: string
 }
@@ -47,7 +48,7 @@ export function useToastStore<T>(selector: (state: ToastStoreState) => T) {
     return useStore(toastStore, selector)
 }
 
-export function openToast(toast: Pick<Toast, "title" | "message">) {
+export function openToast(toast: Pick<Toast, "type" | "title" | "message">) {
     toastStore.getState().addToast({
         id: window.crypto.randomUUID(),
         ...toast,

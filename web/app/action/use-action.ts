@@ -50,18 +50,21 @@ export function useAction<TError, TArgs extends unknown[]>(
         switch (outcome) {
             case ActionOutcome.unknownFailure:
                 openToast({
+                    type: "error",
                     title: "Action failed",
                     message: "Unknown error",
                 })
                 return
             case ActionOutcome.forbidden:
                 openToast({
+                    type: "error",
                     title: "Action failed",
                     message: "Forbidden",
                 })
                 return
             case ActionOutcome.notFound:
                 openToast({
+                    type: "error",
                     title: "Action failed",
                     message: "Not found",
                 })
@@ -70,6 +73,7 @@ export function useAction<TError, TArgs extends unknown[]>(
 
         const errorMessage = mapper(outcome.error)
         openToast({
+            type: "error",
             title: "Action failed",
             message: errorMessage,
         })

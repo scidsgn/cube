@@ -73,8 +73,9 @@ export const TracklistItem = ({
         {
             onSuccess: () =>
                 openToast({
+                    type: "info",
                     title: "Track added to playlist",
-                    message: "Yay!",
+                    message: `${track.title} has been added to the end of the playlist.`,
                 }),
         },
     )
