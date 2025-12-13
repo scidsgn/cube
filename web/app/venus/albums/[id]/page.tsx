@@ -54,6 +54,16 @@ const AlbumPage = async ({ params }: { params: Promise<{ id: string }> }) => {
 
     const album = result.data
 
+    const albumTracks = album.discs.flatMap((disc) =>
+        disc.tracks.map((discTrack) => ({
+            ...discTrack,
+            disc_track: {
+                disc: { ...disc, album },
+                track_number: discTrack.track_number,
+            },
+        })),
+    )
+
     return (
         <AccentProvider color={album.artwork?.accent_color}>
             <PageLayout>
@@ -119,16 +129,7 @@ const AlbumPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                                         }}
                                         columns={["artists", "tempo", "key"]}
                                         showTrackNumber
-                                        surroundingTracks={disc.tracks.map(
-                                            (discTrack) => ({
-                                                ...discTrack,
-                                                disc_track: {
-                                                    disc: { ...disc, album },
-                                                    track_number:
-                                                        track.track_number,
-                                                },
-                                            }),
-                                        )}
+                                        surroundingTracks={albumTracks}
                                     />
                                 ))}
                             </div>
