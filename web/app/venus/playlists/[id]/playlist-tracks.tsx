@@ -81,7 +81,7 @@ export const PlaylistTracks = ({ playlist }: PlaylistTracksProps) => {
 
     return (
         <>
-            <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950 px-5">
+            <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950 pl-5">
                 <TracklistHeader
                     columns={["artists", "album", "tempo", "key"]}
                     showTrackNumber
