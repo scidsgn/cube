@@ -23,12 +23,11 @@ import {
     PageLayout,
     PageSidebar,
 } from "@/app/components/layout/page-layout"
-import { TracklistHeader } from "@/app/venus/components/tracklist/tracklist-header"
-import { PlaylistItem } from "@/app/venus/playlists/[id]/playlist-item"
 import { PlaylistPlaybackButtons } from "@/app/venus/playlists/[id]/playlist-playback-buttons"
 import { PlaylistUser } from "@/app/venus/playlists/[id]/playlist-user"
 import { venusErrorMapper } from "@/app/venus/venus-error-mapper"
 import { venusPlaylistFetchTag } from "@/app/venus/venus-fetch-tags"
+import { PlaylistTracks } from "@/app/venus/playlists/[id]/playlist-tracks"
 
 const PlaylistPage = async ({ params }: PageProps<"/venus/playlists/[id]">) => {
     const playlistId = +(await params).id
@@ -74,22 +73,7 @@ const PlaylistPage = async ({ params }: PageProps<"/venus/playlists/[id]">) => {
                 <PlaylistPlaybackButtons playlist={playlist} />
             </PageSidebar>
             <PageContent className="flex flex-col">
-                <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950">
-                    <TracklistHeader
-                        columns={["artists", "album", "tempo", "key"]}
-                        showTrackNumber
-                    />
-                </div>
-                <div className="flex flex-col gap-0.5">
-                    {playlist.playlist_tracks.map((track) => (
-                        <PlaylistItem
-                            key={track.id}
-                            playlist={playlist}
-                            track={track}
-                            columns={["artists", "album", "tempo", "key"]}
-                        />
-                    ))}
-                </div>
+                <PlaylistTracks playlist={playlist} />
             </PageContent>
         </PageLayout>
     )

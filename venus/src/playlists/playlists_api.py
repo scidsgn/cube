@@ -28,7 +28,7 @@ from src.playlists.playlists_model import (
     PlaylistCreateRequest,
     PlaylistDto,
     PlaylistWithTracksDto,
-    PlaylistAddTrackRequest,
+    PlaylistAddTrackRequest, PlaylistReorderTracksRequest,
 )
 
 router = APIRouter(prefix="/playlists")
@@ -137,3 +137,27 @@ def delete_track_from_playlist(
     session.commit()
 
     return Response(status_code=HTTP_204_NO_CONTENT)
+
+@router.post("/{playlist_id}/reorder", responses=VenusErrorResponses)
+def reorder_playlist_tracks(playlist_id: int, request: PlaylistReorderTracksRequest, session: SessionDep, chamberlock: ChamberlockDep):
+    playlist = session.execute(
+        select(Playlist).where(Playlist.id == playlist_id)
+    ).scalar()
+    if playlist is None:
+        raise VenusError.not_found()
+    if playlist.author != chamberlock.user.userId:
+        raise VenusError.bad(VenusErrorCode.playlist_belongs_to_another_user)
+
+    if len(playlist.tracks) != len(request.track_ids):
+        raise VenusError.bad(VenusErrorCode.playlist_length_mismatch)
+
+    for track in playlist.tracks:
+        try:
+            order = request.track_ids.index(track.id)
+            track.order = order
+        except:
+            raise VenusError.bad(VenusErrorCode.playlist_unknown_track, f"Did not find track ID {track.id}")
+
+    session.commit()
+
+    return Response(status_code=HTTP_200_OK)

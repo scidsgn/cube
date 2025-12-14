@@ -21,7 +21,7 @@ import {
     ActionResult,
 } from "@/app/action/action-types"
 import { openToast } from "@/app/components/toast/toasts-store"
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 type UseActionOptions = {
     onSuccess?: () => unknown
@@ -35,49 +35,52 @@ export function useAction<TError, TArgs extends unknown[]>(
 ) {
     const [ongoing, setOngoing] = useState(false)
 
-    const run = async (...args: TArgs) => {
-        setOngoing(true)
-        const outcome = await action(...args)
-        setOngoing(false)
+    const run = useCallback(
+        async (...args: TArgs) => {
+            setOngoing(true)
+            const outcome = await action(...args)
+            setOngoing(false)
 
-        if (outcome === ActionOutcome.ok) {
-            options?.onSuccess?.()
-            return
-        }
-
-        options?.onError?.()
-
-        switch (outcome) {
-            case ActionOutcome.unknownFailure:
-                openToast({
-                    type: "error",
-                    title: "Action failed",
-                    message: "Unknown error",
-                })
+            if (outcome === ActionOutcome.ok) {
+                options?.onSuccess?.()
                 return
-            case ActionOutcome.forbidden:
-                openToast({
-                    type: "error",
-                    title: "Action failed",
-                    message: "Forbidden",
-                })
-                return
-            case ActionOutcome.notFound:
-                openToast({
-                    type: "error",
-                    title: "Action failed",
-                    message: "Not found",
-                })
-                return
-        }
+            }
 
-        const errorMessage = mapper(outcome.error)
-        openToast({
-            type: "error",
-            title: "Action failed",
-            message: errorMessage,
-        })
-    }
+            options?.onError?.()
 
-    return { run, ongoing }
+            switch (outcome) {
+                case ActionOutcome.unknownFailure:
+                    openToast({
+                        type: "error",
+                        title: "Action failed",
+                        message: "Unknown error",
+                    })
+                    return
+                case ActionOutcome.forbidden:
+                    openToast({
+                        type: "error",
+                        title: "Action failed",
+                        message: "Forbidden",
+                    })
+                    return
+                case ActionOutcome.notFound:
+                    openToast({
+                        type: "error",
+                        title: "Action failed",
+                        message: "Not found",
+                    })
+                    return
+            }
+
+            const errorMessage = mapper(outcome.error)
+            openToast({
+                type: "error",
+                title: "Action failed",
+                message: errorMessage,
+            })
+        },
+        [action, mapper, options],
+    )
+
+    return useMemo(() => ({ run, ongoing }), [run, ongoing])
 }

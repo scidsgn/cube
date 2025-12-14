@@ -49,6 +49,8 @@ class VenusErrorCode(Enum):
 
     # Playlists
     playlist_belongs_to_another_user = auto()
+    playlist_length_mismatch = auto()
+    playlist_unknown_track = auto()
 
 
 class VenusErrorResponse(BaseModel):

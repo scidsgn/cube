@@ -94,3 +94,6 @@ class PlaylistCreateRequest(BaseModel):
 
 class PlaylistAddTrackRequest(BaseModel):
     track_id: int
+
+class PlaylistReorderTracksRequest(BaseModel):
+    track_ids: list[int]

@@ -538,6 +538,16 @@ export type PlaylistDto = {
 };
 
 /**
+ * PlaylistReorderTracksRequest
+ */
+export type PlaylistReorderTracksRequest = {
+    /**
+     * Track Ids
+     */
+    track_ids: Array<number>;
+};
+
+/**
  * PlaylistTrackDto
  */
 export type PlaylistTrackDto = {
@@ -899,7 +909,7 @@ export type TracksResponse = {
 /**
  * VenusErrorCode
  */
-export type VenusErrorCode = 'ENTITY_NOT_FOUND' | 'ENTITY_ALREADY_EXISTS' | 'UNAUTHORIZED' | 'FILE_TOO_LARGE' | 'COULD_NOT_UPLOAD_FILE' | 'SCAN_ALREADY_ONGOING' | 'NO_ONGOING_SCAN' | 'INVALID_FOLDER_PATH' | 'PATH_ALREADY_COVERED' | 'PATH_IS_SUPERSET' | 'PATH_IS_ROOT' | 'PLAYLIST_BELONGS_TO_ANOTHER_USER';
+export type VenusErrorCode = 'ENTITY_NOT_FOUND' | 'ENTITY_ALREADY_EXISTS' | 'UNAUTHORIZED' | 'FILE_TOO_LARGE' | 'COULD_NOT_UPLOAD_FILE' | 'SCAN_ALREADY_ONGOING' | 'NO_ONGOING_SCAN' | 'INVALID_FOLDER_PATH' | 'PATH_ALREADY_COVERED' | 'PATH_IS_SUPERSET' | 'PATH_IS_ROOT' | 'PLAYLIST_BELONGS_TO_ANOTHER_USER' | 'PLAYLIST_LENGTH_MISMATCH' | 'PLAYLIST_UNKNOWN_TRACK';
 
 /**
  * VenusErrorResponse
@@ -3371,6 +3381,60 @@ export type VenusDeleteTrackFromPlaylistErrors = {
 export type VenusDeleteTrackFromPlaylistError = VenusDeleteTrackFromPlaylistErrors[keyof VenusDeleteTrackFromPlaylistErrors];
 
 export type VenusDeleteTrackFromPlaylistResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type VenusReorderPlaylistTracksData = {
+    body: PlaylistReorderTracksRequest;
+    headers?: {
+        /**
+         * Authorization
+         */
+        authorization?: string | null;
+    };
+    path: {
+        /**
+         * Playlist Id
+         */
+        playlist_id: number;
+    };
+    query?: never;
+    url: '/playlists/{playlist_id}/reorder';
+};
+
+export type VenusReorderPlaylistTracksErrors = {
+    /**
+     * Bad Request
+     */
+    400: VenusErrorResponse;
+    /**
+     * Unauthorized
+     */
+    401: VenusErrorResponse;
+    /**
+     * Forbidden
+     */
+    403: VenusErrorResponse;
+    /**
+     * Not Found
+     */
+    404: VenusErrorResponse;
+    /**
+     * Conflict
+     */
+    409: VenusErrorResponse;
+    /**
+     * Unprocessable Entity
+     */
+    422: VenusErrorResponse;
+};
+
+export type VenusReorderPlaylistTracksError = VenusReorderPlaylistTracksErrors[keyof VenusReorderPlaylistTracksErrors];
+
+export type VenusReorderPlaylistTracksResponses = {
     /**
      * Successful Response
      */

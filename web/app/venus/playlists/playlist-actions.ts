@@ -20,6 +20,7 @@ import {
     venusCreatePlaylist,
     venusDeleteTrackFromPlaylist,
     venusGetPlaylists,
+    venusReorderPlaylistTracks,
 } from "@/apis/venus"
 import { actionFromResponse } from "@/app/action/action"
 import { ActionOutcome } from "@/app/action/action-types"
@@ -80,4 +81,20 @@ export async function deleteTrackFromPlaylistAction(
     }
 
     return result
+}
+
+export async function reorderPlaylistTracksAction(
+    playlistId: number,
+    trackIds: number[],
+) {
+    const { response, error } = await venusReorderPlaylistTracks({
+        path: {
+            playlist_id: playlistId,
+        },
+        body: {
+            track_ids: trackIds,
+        },
+    })
+
+    return actionFromResponse(response, error?.code)
 }
