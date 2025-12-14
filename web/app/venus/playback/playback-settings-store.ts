@@ -18,20 +18,24 @@ import { persist } from "zustand/middleware"
 
 type PlaybackSettingsState = {
     volume: number
+    muted: boolean
 
     setVolume: (volume: number) => void
+    setMuted: (muted: boolean) => void
 }
 
 export const usePlaybackSettings = create<PlaybackSettingsState>()(
     persist(
         (set) => ({
             volume: 1,
+            muted: false,
 
             setVolume: (volume) => set({ volume }),
+            setMuted: (muted) => set({ muted }),
         }),
         {
             name: "venus-playback-settings",
-            partialize: ({ volume }) => ({ volume }),
+            partialize: ({ volume, muted }) => ({ volume, muted }),
         },
     ),
 )

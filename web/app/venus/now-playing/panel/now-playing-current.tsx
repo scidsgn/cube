@@ -48,6 +48,9 @@ export const NowPlayingCurrent = ({ track }: NowPlayingCurrentProps) => {
     const volume = usePlaybackSettings((state) => state.volume)
     const setVolume = usePlaybackSettings((state) => state.setVolume)
 
+    const muted = usePlaybackSettings((state) => state.muted)
+    const setMuted = usePlaybackSettings((state) => state.setMuted)
+
     const shuffle = usePlaybackQueue((state) => state.shuffle)
     const setShuffle = usePlaybackQueue((state) => state.setShuffle)
 
@@ -148,13 +151,20 @@ export const NowPlayingCurrent = ({ track }: NowPlayingCurrentProps) => {
                         <NowPlayingNextButton />
                     </div>
 
-                    <Button variant="transparent" icon="volume_up" />
+                    <Button
+                        variant="transparent"
+                        icon={muted ? "volume_off" : "volume_up"}
+                        onClick={() => setMuted(!muted)}
+                    />
                     <div className="w-20">
                         <NowPlayingSlider
-                            value={volume * 100}
+                            value={muted ? 0 : volume * 100}
                             min={0}
                             max={100}
-                            onChange={(v) => setVolume(v / 100)}
+                            onChange={(v) => {
+                                setVolume(v / 100)
+                                setMuted(false)
+                            }}
                         />
                     </div>
                 </div>

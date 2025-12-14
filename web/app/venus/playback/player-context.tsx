@@ -91,6 +91,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     const [loop, setLoop] = useState(false)
 
     const volume = usePlaybackSettings((state) => state.volume)
+    const muted = usePlaybackSettings((state) => state.muted)
 
     const startSeeking = useCallback(() => {
         seekingRef.current = true
@@ -162,8 +163,8 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
             return
         }
 
-        gainNode.gain.value = exponentialVolume(volume)
-    }, [volume, gainNode])
+        gainNode.gain.value = exponentialVolume(muted ? 0 : volume)
+    }, [volume, muted, gainNode])
 
     return (
         <PlayerContext.Provider
@@ -188,15 +189,24 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
                     autoPlay
                     crossOrigin="anonymous"
                     ref={audioRef}
-                    onPlay={(e) => {
-                        e.currentTarget.volume = volume
+                    onPlay={() => {
+                        if (gainNode) {
+                            gainNode.gain.value = exponentialVolume(
+                                muted ? 0 : volume,
+                            )
+                        }
+
                         setPlaybackState(PlayerPlaybackState.playing)
                     }}
                     onPause={() => {
                         setPlaybackState(PlayerPlaybackState.paused)
                     }}
-                    onEnded={(e) => {
-                        e.currentTarget.volume = volume
+                    onEnded={() => {
+                        if (gainNode) {
+                            gainNode.gain.value = exponentialVolume(
+                                muted ? 0 : volume,
+                            )
+                        }
 
                         seekingRef.current = false
                         if (loop) {

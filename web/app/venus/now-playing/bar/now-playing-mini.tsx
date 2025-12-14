@@ -24,6 +24,7 @@ import {
     usePlaybackQueue,
 } from "@/app/venus/playback/playback-queue-store"
 import { usePlayer } from "@/app/venus/playback/player-context"
+import { usePlaybackSettings } from "@/app/venus/playback/playback-settings-store"
 
 type NowPlayingMiniProps = {
     track: PlaybackBaseTrack
@@ -33,6 +34,7 @@ type NowPlayingMiniProps = {
 export const NowPlayingMini = ({ track, onExpand }: NowPlayingMiniProps) => {
     const { currentTime, loop } = usePlayer()
     const shuffle = usePlaybackQueue((state) => state.shuffle)
+    const muted = usePlaybackSettings((state) => state.muted)
 
     return (
         <div
@@ -63,6 +65,13 @@ export const NowPlayingMini = ({ track, onExpand }: NowPlayingMiniProps) => {
                         icon="shuffle"
                     />
                 ) : null}
+                {muted && (
+                    <IconSymbol
+                        className="text-accent-500"
+                        size={20}
+                        icon="volume_off"
+                    />
+                )}
 
                 <div className="grow" />
 
