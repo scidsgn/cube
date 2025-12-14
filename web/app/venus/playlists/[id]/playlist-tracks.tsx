@@ -87,61 +87,67 @@ export const PlaylistTracks = ({ playlist }: PlaylistTracksProps) => {
                     showTrackNumber
                 />
             </div>
-            <DndContext
-                id={`playlist-draggable-${playlist.id}`}
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragStart={(e) => {
-                    if (e.active) {
-                        setActiveId(e.active.id as number)
-                    }
-                }}
-                onDragEnd={(e) => {
-                    const { active, over } = e
+            <div className="flex flex-col gap-0.5">
+                <DndContext
+                    id={`playlist-draggable-${playlist.id}`}
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragStart={(e) => {
+                        if (e.active) {
+                            setActiveId(e.active.id as number)
+                        }
+                    }}
+                    onDragEnd={(e) => {
+                        const { active, over } = e
 
-                    if (over && active.id !== over.id) {
-                        const oldIndex = tracks.findIndex(
-                            (track) => track.id === active.id,
-                        )
-                        const newIndex = tracks.findIndex(
-                            (track) => track.id === over.id,
-                        )
+                        if (over && active.id !== over.id) {
+                            const oldIndex = tracks.findIndex(
+                                (track) => track.id === active.id,
+                            )
+                            const newIndex = tracks.findIndex(
+                                (track) => track.id === over.id,
+                            )
 
-                        const newTracks = arrayMove(tracks, oldIndex, newIndex)
+                            const newTracks = arrayMove(
+                                tracks,
+                                oldIndex,
+                                newIndex,
+                            )
 
-                        setTracks(newTracks)
-                        debouncedReorderTracks(
-                            playlist.id,
-                            newTracks.map((track) => track.id),
-                        )
-                    }
+                            setTracks(newTracks)
+                            debouncedReorderTracks(
+                                playlist.id,
+                                newTracks.map((track) => track.id),
+                            )
+                        }
 
-                    setActiveId(null)
-                }}
-            >
-                <SortableContext
-                    items={tracks}
-                    strategy={verticalListSortingStrategy}
+                        setActiveId(null)
+                    }}
                 >
-                    {tracks.map((track) => (
-                        <PlaylistTracksDraggableItem
-                            key={track.id}
-                            playlist={playlist}
-                            track={track}
-                            active={track.id === activeId}
-                            surroundingTracks={surroundingTracks}
-                        />
-                    ))}
-                </SortableContext>
-                <DragOverlay>
-                    {activeTrack && (
-                        <PlaylistTracksItem
-                            playlist={playlist}
-                            track={activeTrack}
-                        />
-                    )}
-                </DragOverlay>
-            </DndContext>
+                    <SortableContext
+                        items={tracks}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {tracks.map((track) => (
+                            <PlaylistTracksDraggableItem
+                                key={track.id}
+                                playlist={playlist}
+                                track={track}
+                                active={track.id === activeId}
+                                surroundingTracks={surroundingTracks}
+                            />
+                        ))}
+                    </SortableContext>
+                    <DragOverlay>
+                        {activeTrack && (
+                            <PlaylistTracksItem
+                                playlist={playlist}
+                                track={activeTrack}
+                            />
+                        )}
+                    </DragOverlay>
+                </DndContext>
+            </div>
         </>
     )
 }
