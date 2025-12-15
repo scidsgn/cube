@@ -14,6 +14,7 @@
  */
 
 import { SettingsSection } from "@/app/settings/components/settings-section"
+import { LinkButton } from "@/app/components/button/button"
 
 const AboutSettingsPage = () => {
     return (
@@ -37,6 +38,16 @@ const AboutSettingsPage = () => {
                     You are running a test release of CUBE. Expect bugs and
                     stuff. Or if you&#39;re me, fix the bugs and stuff.
                 </p>
+
+                <LinkButton
+                    className="self-start"
+                    href="https://github.com/scidsgn/cube"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    icon="code"
+                >
+                    Source code on GitHub
+                </LinkButton>
             </SettingsSection>
         </>
     )
