@@ -30,6 +30,9 @@ export function venusErrorMapper(code: VenusErrorCode) {
         PATH_IS_SUPERSET: "Some folders inside already set to be imported", // TODO this could be a thing where the user could ask to remove those subfolders and import the whole folder instead,
         PLAYLIST_BELONGS_TO_ANOTHER_USER:
             "Cannot make changes to a playlist belonging to another user",
+        PLAYLIST_LENGTH_MISMATCH:
+            "Provided track set doesn't match amount of tracks in the playlist", // TODO very technical, shouldn't happen
+        PLAYLIST_UNKNOWN_TRACK: "Unknown playlist track",
     }
 
     return mappings[code]
