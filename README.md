@@ -16,7 +16,7 @@ NAS software?
 You will need a pair of RSA keys for JWT signing. Generate them if you don't have them already:
 
 ```sh
-mdkir secrets
+mkdir secrets
 cd secrets
 openssl genrsa -out keypair.pem 2048
 openssl rsa -in keypair.pem -pubout -out publickey.crt
