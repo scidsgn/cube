@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -14,20 +14,16 @@
  */
 
 import { setupClients } from "@/apis/client-setup"
-import { GeneralSans } from "@/app/fonts/general-sans/generalSans"
 import { Header } from "@/app/header/header"
 import { HeaderContextProvider } from "@/app/header/header-context"
 import { Providers } from "@/app/providers"
 import { NowPlayingPanel } from "@/app/venus/now-playing/panel/now-playing-panel"
 import type { Metadata } from "next"
-import { JetBrains_Mono } from "next/font/google"
 import { ReactNode } from "react"
 
 import "./globals.css"
-
-const jbMono = JetBrains_Mono({
-    variable: "--font-jb-mono",
-})
+import { jetbrainsMono } from "@/app/fonts/jetbrains-mono/jetbrains-mono"
+import { publicSans } from "@/app/fonts/plus-jakarta-sans/public-sans"
 
 export const metadata: Metadata = {
     title: "CUBE",
@@ -43,7 +39,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${jbMono.variable} ${GeneralSans.variable} antialiased`}
+                className={`${jetbrainsMono.variable} ${publicSans.variable} antialiased`}
             >
                 <HeaderContextProvider>
                     <Providers>

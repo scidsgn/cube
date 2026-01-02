@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -19,9 +19,8 @@
 @import "material-symbols/sharp.css";
 
 @theme inline {
-    --font-sans: var(--font-general-sans);
-    --font-serif: var(--font-recia);
-    --font-mono: var(--font-jb-mono);
+    --font-sans: var(--font-public-sans), sans-serif;
+    --font-mono: var(--font-jb-mono), monospace;
 
     --color-gray-50: #f5f6f6;
     --color-gray-100: #e5e7e8;
@@ -84,5 +83,5 @@ body {
     background: var(--color-gray-950);
     color: var(--color-gray-50);
 
-    font-family: var(--font-general-sans);
+    font-family: var(--font-public-sans);
 }

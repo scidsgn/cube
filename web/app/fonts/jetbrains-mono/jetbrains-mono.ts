@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -15,16 +15,16 @@
 
 import localFont from "next/font/local"
 
-export const GeneralSans = localFont({
+export const jetbrainsMono = localFont({
     src: [
         {
-            path: "./GeneralSans-Variable.woff2",
+            path: "./JetBrainsMono-Variable.woff2",
             style: "regular",
         },
         {
-            path: "./GeneralSans-VariableItalic.woff2",
+            path: "./JetBrainsMono-VariableItalic.woff2",
             style: "italic",
         },
     ],
-    variable: "--font-general-sans",
+    variable: "--font-jb-mono",
 })
