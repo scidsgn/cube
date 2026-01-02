@@ -13,7 +13,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { FlatCompat } from "@eslint/eslintrc"
-import storybook from "eslint-plugin-storybook"
 import unusedImports from "eslint-plugin-unused-imports"
 import { dirname, join } from "path"
 import { fileURLToPath } from "url"
@@ -51,7 +50,6 @@ const eslintConfig = [
             "next-env.d.ts",
         ],
     },
-    ...storybook.configs["flat/recommended"],
 ]
 
 export default eslintConfig
