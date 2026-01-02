@@ -43,3 +43,6 @@ next-env.d.ts
 /.idea
 
 /prisma/app/apis/prisma
+
+*storybook.log
+storybook-static
