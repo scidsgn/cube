@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -68,6 +68,13 @@ export function useAction<TError, TArgs extends unknown[]>(
                         type: "error",
                         title: "Action failed",
                         message: "Not found",
+                    })
+                    return
+                case ActionOutcome.connectionFailed:
+                    openToast({
+                        type: "error",
+                        title: "Action failed",
+                        message: "Could not connect",
                     })
                     return
             }

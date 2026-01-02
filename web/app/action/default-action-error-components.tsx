@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -48,6 +48,17 @@ export const DefaultActionErrorComponents: ActionErrorComponents = {
             />
             <span className="text-xl font-medium text-red-400">
                 An unknown error occurred
+            </span>
+        </div>
+    ),
+    [ActionOutcome.connectionFailed]: (
+        <div className="flex items-center gap-3">
+            <IconSymbol
+                className="bg-red-400 p-1.5 text-gray-950"
+                icon="link_off"
+            />
+            <span className="text-xl font-medium text-red-400">
+                Connection failed
             </span>
         </div>
     ),

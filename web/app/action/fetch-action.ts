@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -35,33 +35,38 @@ export async function actionFromFetch<TData, TError, TRawError>(
         e: TRawError,
     ) => TError | typeof ActionOutcome.unknownFailure,
 ): Promise<ActionResultWithData<TData, TError>> {
-    const { data, error, response } = await result
-    const statusAsString = response.status.toString()
+    try {
+        const { data, error, response } = await result
+        const statusAsString = response.status.toString()
 
-    if (statusAsString.startsWith("5")) {
-        return ActionOutcome.unknownFailure
-    }
-    if (response.status === 403) {
-        return ActionOutcome.forbidden
-    }
-    if (response.status === 404) {
-        return ActionOutcome.notFound
-    }
-    if (error) {
-        if (errorMapper) {
-            const mapping = errorMapper(error)
-            if (mapping === ActionOutcome.unknownFailure) {
-                return ActionOutcome.unknownFailure
+        if (statusAsString.startsWith("5")) {
+            return ActionOutcome.unknownFailure
+        }
+        if (response.status === 403) {
+            return ActionOutcome.forbidden
+        }
+        if (response.status === 404) {
+            return ActionOutcome.notFound
+        }
+        if (error) {
+            if (errorMapper) {
+                const mapping = errorMapper(error)
+                if (mapping === ActionOutcome.unknownFailure) {
+                    return ActionOutcome.unknownFailure
+                }
+
+                return actionErrorOf(mapping)
             }
 
-            return actionErrorOf(mapping)
+            return ActionOutcome.unknownFailure
+        }
+        if (!data) {
+            return ActionOutcome.unknownFailure
         }
 
-        return ActionOutcome.unknownFailure
+        return actionDataOf(data)
+    } catch (error) {
+        console.log(error)
+        return ActionOutcome.connectionFailed
     }
-    if (!data) {
-        return ActionOutcome.unknownFailure
-    }
-
-    return actionDataOf(data)
 }
