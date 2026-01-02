@@ -40,6 +40,7 @@ import {
     PlayerTrack,
     trackMusicalFeaturesDtoToPlayerModel,
 } from "@/app/venus/playback/player-track-types"
+import { TracklistProvider } from "@/app/venus/components/tracklist/tracklist-context"
 
 const AlbumPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     const albumId = +(await params).id
@@ -102,41 +103,46 @@ const AlbumPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                     <AlbumPlaybackButtons album={album} />
                 </PageSidebar>
                 <PageContent className="flex flex-col">
-                    {album.discs.map((disc) => (
-                        <Fragment key={disc.id}>
-                            {album.discs.length > 1 && (
-                                <header className="px-3 pb-1 text-lg font-semibold not-first-of-type:pt-6">
-                                    Disc {disc.disc_number}
-                                </header>
-                            )}
+                    <TracklistProvider tracks={albumTracks}>
+                        {album.discs.map((disc) => (
+                            <Fragment key={disc.id}>
+                                {album.discs.length > 1 && (
+                                    <header className="px-3 pb-1 text-lg font-semibold not-first-of-type:pt-6">
+                                        Disc {disc.disc_number}
+                                    </header>
+                                )}
 
-                            <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950">
-                                <TracklistHeader
-                                    columns={["artists", "tempo", "key"]}
-                                    showTrackNumber
-                                />
-                            </div>
-
-                            <div
-                                key={disc.id}
-                                className="flex flex-col gap-0.5"
-                            >
-                                {disc.tracks.map((track) => (
-                                    <TracklistItem
-                                        key={track.id}
-                                        track={albumTrackToPlayerTrack(
-                                            track,
-                                            disc,
-                                            album,
-                                        )}
+                                <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950">
+                                    <TracklistHeader
                                         columns={["artists", "tempo", "key"]}
                                         showTrackNumber
-                                        surroundingTracks={albumTracks}
                                     />
-                                ))}
-                            </div>
-                        </Fragment>
-                    ))}
+                                </div>
+
+                                <div
+                                    key={disc.id}
+                                    className="flex flex-col gap-0.5"
+                                >
+                                    {disc.tracks.map((track) => (
+                                        <TracklistItem
+                                            key={track.id}
+                                            track={albumTrackToPlayerTrack(
+                                                track,
+                                                disc,
+                                                album,
+                                            )}
+                                            columns={[
+                                                "artists",
+                                                "tempo",
+                                                "key",
+                                            ]}
+                                            showTrackNumber
+                                        />
+                                    ))}
+                                </div>
+                            </Fragment>
+                        ))}
+                    </TracklistProvider>
                 </PageContent>
             </PageLayout>
         </AccentProvider>

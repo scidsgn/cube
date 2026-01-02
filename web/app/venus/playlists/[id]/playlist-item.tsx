@@ -1,6 +1,6 @@
 /*
  * CUBE
- * Copyright (C) 2025  scidsgn
+ * Copyright (C) 2025-2026  scidsgn
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -21,6 +21,7 @@ import { TracklistItem } from "@/app/venus/components/tracklist/tracklist-item"
 import { deleteTrackFromPlaylistAction } from "@/app/venus/playlists/playlist-actions"
 import { venusErrorMapper } from "@/app/venus/venus-error-mapper"
 import { ComponentProps } from "react"
+import { trackDtoToPlayerTrack } from "@/app/venus/playback/player-track-types"
 
 type PlaylistItemProps = {
     playlist: PlaylistWithTracksDto
@@ -40,7 +41,7 @@ export const PlaylistItem = ({
     return (
         <TracklistItem
             {...props}
-            track={track.track}
+            track={trackDtoToPlayerTrack(track.track)}
             menu={[
                 {
                     type: "item",

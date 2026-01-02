@@ -38,12 +38,12 @@ import Link from "next/link"
 import { Fragment, ReactNode } from "react"
 import { usePlaylistContext } from "@/app/venus/playlists/context/playlist-context"
 import { PlayerTrack } from "@/app/venus/playback/player-track-types"
+import { useTracklist } from "@/app/venus/components/tracklist/tracklist-context"
 
 type TracklistItemProps = {
     track: PlayerTrack
     columns: TracklistColumn[]
     showTrackNumber?: boolean
-    surroundingTracks?: PlayerTrack[]
     menu?: Menu
 }
 
@@ -51,10 +51,10 @@ export const TracklistItem = ({
     track,
     columns,
     showTrackNumber,
-    surroundingTracks,
     menu,
 }: TracklistItemProps) => {
     const { playlists } = usePlaylistContext()
+    const { tracks: surroundingTracks } = useTracklist()
 
     const addTrackToPlaylist = useAction(
         addTrackToPlaylistAction,

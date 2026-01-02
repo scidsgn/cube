@@ -42,10 +42,8 @@ import { useAction } from "@/app/action/use-action"
 import { venusErrorMapper } from "@/app/venus/venus-error-mapper"
 
 import { debounce } from "lodash"
-import {
-    PlayerTrack,
-    trackDtoToPlayerTrack,
-} from "@/app/venus/playback/player-track-types"
+import { trackDtoToPlayerTrack } from "@/app/venus/playback/player-track-types"
+import { TracklistProvider } from "@/app/venus/components/tracklist/tracklist-context"
 
 type PlaylistTracksProps = {
     playlist: PlaylistWithTracksDto
@@ -83,7 +81,7 @@ export const PlaylistTracks = ({ playlist }: PlaylistTracksProps) => {
     )
 
     return (
-        <>
+        <TracklistProvider tracks={surroundingTracks}>
             <div className="sticky top-0 z-50 flex flex-col gap-2 bg-gray-950 pl-5">
                 <TracklistHeader
                     columns={["artists", "album", "tempo", "key"]}
@@ -137,7 +135,6 @@ export const PlaylistTracks = ({ playlist }: PlaylistTracksProps) => {
                                 playlist={playlist}
                                 track={track}
                                 active={track.id === activeId}
-                                surroundingTracks={surroundingTracks}
                             />
                         ))}
                     </SortableContext>
@@ -151,21 +148,19 @@ export const PlaylistTracks = ({ playlist }: PlaylistTracksProps) => {
                     </DragOverlay>
                 </DndContext>
             </div>
-        </>
+        </TracklistProvider>
     )
 }
 
 type PlaylistTracksDraggableItemProps = {
     playlist: PlaylistWithTracksDto
     track: PlaylistTrackDto
-    surroundingTracks?: PlayerTrack[]
     active: boolean
 }
 
 const PlaylistTracksDraggableItem = ({
     playlist,
     track,
-    surroundingTracks,
     active,
 }: PlaylistTracksDraggableItemProps) => {
     const {
@@ -187,7 +182,6 @@ const PlaylistTracksDraggableItem = ({
         <PlaylistTracksItem
             playlist={playlist}
             track={track}
-            surroundingTracks={surroundingTracks}
             itemProps={{
                 ...attributes,
                 style,
@@ -204,7 +198,6 @@ const PlaylistTracksDraggableItem = ({
 type PlaylistTracksItemProps = {
     playlist: PlaylistWithTracksDto
     track: PlaylistTrackDto
-    surroundingTracks?: PlayerTrack[]
     itemProps?: DetailedHTMLProps<
         HTMLAttributes<HTMLDivElement>,
         HTMLDivElement
@@ -218,7 +211,6 @@ type PlaylistTracksItemProps = {
 const PlaylistTracksItem = ({
     playlist,
     track,
-    surroundingTracks,
     itemProps,
     handleProps,
 }: PlaylistTracksItemProps) => {
@@ -235,7 +227,6 @@ const PlaylistTracksItem = ({
                 key={track.id}
                 playlist={playlist}
                 track={track}
-                surroundingTracks={surroundingTracks}
                 columns={["artists", "album", "tempo", "key"]}
             />
         </div>
