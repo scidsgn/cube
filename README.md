@@ -9,6 +9,8 @@
 
 NAS software?
 
+![CUBE screenshot](assets/cube-screenshot.png)
+
 ## Deployment
 
 ## Generating keys for auth
